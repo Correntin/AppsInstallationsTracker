@@ -15,8 +15,8 @@ public class AppsInstallationsReceiver extends BroadcastReceiver
     @Override
     public void onReceive(Context context, Intent intent)
     {
-        Intent intent2 = new Intent(context, TrackerService.class);
-        intent2.setData(intent.getData());
-        context.startService(intent2);
+        final Intent intentPackage = new Intent(context, TrackerService.class);
+        intentPackage.setData(intent.getData());
+        context.startService(intentPackage);
     }
 }

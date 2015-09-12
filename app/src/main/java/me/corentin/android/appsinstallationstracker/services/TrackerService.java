@@ -49,7 +49,7 @@ public class TrackerService extends Service
     {
         packageName = packageName.substring(8);
 
-        PackageManager packageManager = this.getPackageManager();
+        final PackageManager packageManager = this.getPackageManager();
 
         ApplicationInfo applicationInfo = null;
 
@@ -59,20 +59,19 @@ public class TrackerService extends Service
         }
         catch (Exception e)
         {
+            Toast.makeText(this, packageName + " : Not Found", Toast.LENGTH_SHORT).show();
             e.printStackTrace();
         }
-
-        Log.d("CORENTIN", "handleNewApp packageInfo="+applicationInfo);
 
         if (applicationInfo != null)
         {
 
-            Intent intentApp = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+            final Intent intentApp = new Intent(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             intentApp.setData(Uri.parse("package:" + packageName));
 
-            PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intentApp, 0);
+            final PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intentApp, 0);
 
-            Notification n = new Notification.Builder(this)
+            final Notification n = new Notification.Builder(this)
                     .setContentTitle(packageManager.getApplicationLabel(applicationInfo))
                     .setContentText(applicationInfo.packageName)
                     .setLargeIcon(((BitmapDrawable) packageManager.getApplicationIcon(applicationInfo)).getBitmap())
@@ -82,12 +81,8 @@ public class TrackerService extends Service
                     .build();
 
 
-            NotificationManager notificationManager =
-                    (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-
+            final NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
             int time = (int) System.currentTimeMillis();
-
-            Log.d("CORENTIN", "handleNewApp time=" + time);
 
             notificationManager.notify(time, n);
         }
